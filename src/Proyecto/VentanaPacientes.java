@@ -4,6 +4,13 @@
  */
 package Proyecto;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Alvaro
@@ -15,6 +22,71 @@ public class VentanaPacientes extends javax.swing.JPanel {
      */
     public VentanaPacientes() {
         initComponents();
+        mostrarDatos();
+    }
+
+    public void mostrarDatos() {
+        try {
+            ConexionBD conect = new ConexionBD();
+            conect.conexion();
+
+            String[] titulos = {"DNI", "Nombre", "Apellidos", "Edad", "Sexo"};
+
+            String[] registros = new String[5];
+
+            DefaultTableModel modelo = new DefaultTableModel(null, titulos);
+
+            String sql = "SELECT * FROM pacientes";
+
+            try {
+                Statement st = conect.conect.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+
+                while (rs.next()) {
+                    registros[0] = rs.getString("dni");
+                    registros[1] = rs.getString("nombre");
+                    registros[2] = rs.getString("apellidos");
+                    registros[3] = rs.getString("edad");
+                    registros[4] = rs.getString("sexo");
+
+                    modelo.addRow(registros);
+                }
+                tablaPacientes.setModel(modelo);
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "ERROR AL MOSTRAR DATOS");
+            }
+            conect.conect.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
+    public void limpiar() {
+        dniBox.setText("");
+        nombreBox.setText("");
+        apellidosBox.setText("");
+        edadBox.setText("");
+        sexoBox.setSelectedIndex(0);
+    }
+
+    public void eliminarDatos() {
+        try {
+            ConexionBD conect = new ConexionBD();
+            conect.conexion();
+
+            int filaSeleccionada = tablaPacientes.getSelectedRow();
+
+            String sql = "DELETE FROM pacientes WHERE dni = '" + tablaPacientes.getValueAt(filaSeleccionada, 0) + "'";
+
+            Statement st = conect.conect.createStatement();
+            int n = st.executeUpdate(sql);
+
+            if (n >= 0) {
+                JOptionPane.showMessageDialog(null, "PACIENTE ELIMINADO.");
+            }
+        } catch (Exception e) {
+        }
+
     }
 
     /**
@@ -27,22 +99,142 @@ public class VentanaPacientes extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaPacientes = new javax.swing.JTable();
+        nombreBuscar = new javax.swing.JLabel();
+        nombreBuscarBox = new javax.swing.JTextField();
+        sexoBuscar = new javax.swing.JLabel();
+        sexoBuscarBox = new javax.swing.JComboBox<>();
+        sexoText = new javax.swing.JLabel();
+        sexoBox = new javax.swing.JComboBox<>();
+        botonLimpiar = new javax.swing.JButton();
+        botonRegistrar = new javax.swing.JButton();
+        botonEliminar = new javax.swing.JButton();
+        dniText = new javax.swing.JLabel();
+        dniBox = new javax.swing.JTextField();
+        nombreText = new javax.swing.JLabel();
+        nombreBox = new javax.swing.JTextField();
+        apellidosText = new javax.swing.JLabel();
+        apellidosBox = new javax.swing.JTextField();
+        edadText = new javax.swing.JLabel();
+        edadBox = new javax.swing.JTextField();
+        botonBuscar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 204, 204));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaPacientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaPacientes);
+
+        nombreBuscar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        nombreBuscar.setForeground(new java.awt.Color(0, 0, 0));
+        nombreBuscar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nombreBuscar.setText("Nombre del Paciente");
+
+        nombreBuscarBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        nombreBuscarBox.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 153, 153)));
+
+        sexoBuscar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        sexoBuscar.setForeground(new java.awt.Color(0, 0, 0));
+        sexoBuscar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sexoBuscar.setText("Sexo");
+
+        sexoBuscarBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione Sexo...", "Hombre", "Mujer" }));
+        sexoBuscarBox.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 153, 153)));
+
+        sexoText.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        sexoText.setForeground(new java.awt.Color(0, 0, 0));
+        sexoText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sexoText.setText("Sexo");
+
+        sexoBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione Sexo...", "Hombre", "Mujer" }));
+        sexoBox.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 153, 153)));
+
+        botonLimpiar.setBackground(new java.awt.Color(0, 153, 153));
+        botonLimpiar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        botonLimpiar.setForeground(new java.awt.Color(255, 255, 255));
+        botonLimpiar.setText("Limpiar");
+        botonLimpiar.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        botonLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonLimpiarActionPerformed(evt);
+            }
+        });
+
+        botonRegistrar.setBackground(new java.awt.Color(0, 153, 153));
+        botonRegistrar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        botonRegistrar.setForeground(new java.awt.Color(255, 255, 255));
+        botonRegistrar.setText("Registrar Paciente");
+        botonRegistrar.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        botonRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonRegistrarActionPerformed(evt);
+            }
+        });
+
+        botonEliminar.setBackground(new java.awt.Color(0, 153, 153));
+        botonEliminar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        botonEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        botonEliminar.setText("Eliminar Paciente");
+        botonEliminar.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        botonEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEliminarActionPerformed(evt);
+            }
+        });
+
+        dniText.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        dniText.setForeground(new java.awt.Color(0, 0, 0));
+        dniText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        dniText.setText("DNI");
+
+        dniBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        dniBox.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 153, 153)));
+        dniBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dniBoxActionPerformed(evt);
+            }
+        });
+
+        nombreText.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        nombreText.setForeground(new java.awt.Color(0, 0, 0));
+        nombreText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nombreText.setText("Nombre del Paciente");
+
+        nombreBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        nombreBox.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 153, 153)));
+
+        apellidosText.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        apellidosText.setForeground(new java.awt.Color(0, 0, 0));
+        apellidosText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        apellidosText.setText("Apellidos del Paciente");
+
+        apellidosBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        apellidosBox.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 153, 153)));
+
+        edadText.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        edadText.setForeground(new java.awt.Color(0, 0, 0));
+        edadText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        edadText.setText("Edad");
+
+        edadBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        edadBox.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 153, 153)));
+
+        botonBuscar.setBackground(new java.awt.Color(0, 153, 153));
+        botonBuscar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        botonBuscar.setForeground(new java.awt.Color(255, 255, 255));
+        botonBuscar.setText("Buscar");
+        botonBuscar.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(255, 255, 255)));
+        botonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -50,21 +242,179 @@ public class VentanaPacientes extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1007, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(210, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(311, 311, 311)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(nombreBuscarBox)
+                            .addComponent(nombreBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(sexoBuscarBox, 0, 169, Short.MAX_VALUE)
+                            .addComponent(sexoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(171, 171, 171)
+                        .addComponent(botonBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1007, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(sexoBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(sexoText, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(botonLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botonRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botonEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(dniBox)
+                        .addComponent(dniText, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(nombreBox)
+                        .addComponent(nombreText, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(apellidosBox)
+                        .addComponent(apellidosText, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(edadBox)
+                        .addComponent(edadText, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(90, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(nombreBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(sexoBuscar))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(nombreBuscarBox, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(sexoBuscarBox, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(dniText, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(dniBox, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(nombreText, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(nombreBox, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(apellidosText, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(apellidosBox, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(edadText, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(edadBox, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(sexoText)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sexoBox, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(botonLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(botonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(botonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void botonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLimpiarActionPerformed
+        limpiar();
+    }//GEN-LAST:event_botonLimpiarActionPerformed
+
+    private void botonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarActionPerformed
+        try {
+            ConexionBD conect = new ConexionBD();
+            conect.conexion();
+            
+            String dni = dniBox.getText();
+            String nombre = nombreBox.getText();
+            String apellidos = apellidosBox.getText();
+            String edad = edadBox.getText();
+            String sexo = sexoBox.getSelectedItem().toString();
+
+            PreparedStatement ps;
+            String sql;
+
+            sql = "INSERT INTO pacientes(dni, nombre, apellidos, edad, sexo) VALUES (?, ?, ?, ?, ?)";
+            ps = conect.conect.prepareStatement(sql);
+
+            ps.setString(1, dni);
+            ps.setString(2, nombre);
+            ps.setString(3, apellidos);
+            ps.setString(4, edad);
+            ps.setString(5, sexo);
+
+            ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "PACIENTE AÑADIDO CORRECTAMENTE.");
+
+            limpiar();
+            mostrarDatos();
+
+            conect.conect.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL AÑADIR PRODUCTO O AL CERRAR CONEXIÓN");
+        }
+    }//GEN-LAST:event_botonRegistrarActionPerformed
+
+    private void botonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarActionPerformed
+        eliminarDatos();
+        mostrarDatos();
+    }//GEN-LAST:event_botonEliminarActionPerformed
+
+    private void dniBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dniBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dniBoxActionPerformed
+
+    private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
+        ConexionBD conect = new ConexionBD();
+        conect.conexion();
+        
+        String nombre = nombreBuscarBox.getText();
+        String sexo = sexoBuscarBox.getSelectedItem().toString();
+        
+        if (nombre.equals("")){
+            nombre = null;
+        }
+        if (sexo.equals("Seleccione Sexo...")){
+            sexo = null;
+        }
+        
+        
+    }//GEN-LAST:event_botonBuscarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField apellidosBox;
+    private javax.swing.JLabel apellidosText;
+    private javax.swing.JButton botonBuscar;
+    private javax.swing.JButton botonEliminar;
+    private javax.swing.JButton botonLimpiar;
+    private javax.swing.JButton botonRegistrar;
+    private javax.swing.JTextField dniBox;
+    private javax.swing.JLabel dniText;
+    private javax.swing.JTextField edadBox;
+    private javax.swing.JLabel edadText;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField nombreBox;
+    private javax.swing.JLabel nombreBuscar;
+    private javax.swing.JTextField nombreBuscarBox;
+    private javax.swing.JLabel nombreText;
+    private javax.swing.JComboBox<String> sexoBox;
+    private javax.swing.JLabel sexoBuscar;
+    private javax.swing.JComboBox<String> sexoBuscarBox;
+    private javax.swing.JLabel sexoText;
+    private javax.swing.JTable tablaPacientes;
     // End of variables declaration//GEN-END:variables
 }

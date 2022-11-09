@@ -4,6 +4,8 @@
  */
 package Proyecto;
 
+import java.awt.BorderLayout;
+
 /**
  *
  * @author Alvaro
@@ -15,6 +17,7 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -36,6 +39,7 @@ public class Principal extends javax.swing.JFrame {
         panelConsultas = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         setSize(new java.awt.Dimension(1223, 696));
 
         panelPrincipal.setBackground(new java.awt.Color(15, 90, 149));
@@ -59,6 +63,11 @@ public class Principal extends javax.swing.JFrame {
         btnCerrar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnCerrar.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrar.setText("X");
+        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarActionPerformed(evt);
+            }
+        });
 
         btnCerrarSesion.setBackground(new java.awt.Color(0, 51, 153));
         btnCerrarSesion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -103,7 +112,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnCerrar)
                 .addContainerGap())
-            .addComponent(panelConsultas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelConsultas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelPrincipalLayout.setVerticalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,8 +146,19 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGestionPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionPacientesActionPerformed
-        // TODO add your handling code here:
+        VentanaPacientes pacientes = new VentanaPacientes();
+        pacientes.setSize(1223, 628);
+        pacientes.setLocation(0, 0);
+
+        panelConsultas.removeAll();
+        panelConsultas.add(pacientes, BorderLayout.CENTER);
+        panelConsultas.revalidate();
+        panelConsultas.repaint();
     }//GEN-LAST:event_btnGestionPacientesActionPerformed
+
+    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnCerrarActionPerformed
 
     /**
      * @param args the command line arguments
