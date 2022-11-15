@@ -10,12 +10,12 @@ import java.awt.BorderLayout;
  *
  * @author Alvaro
  */
-public class Principal extends javax.swing.JFrame {
+public class VentanaAdmin extends javax.swing.JFrame {
 
     /**
      * Creates new form Principal
      */
-    public Principal() {
+    public VentanaAdmin() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -37,14 +37,15 @@ public class Principal extends javax.swing.JFrame {
         btnAyuda = new javax.swing.JButton();
         infoUser = new javax.swing.JLabel();
         panelConsultas = new javax.swing.JPanel();
+        btnGestionCitas1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         setSize(new java.awt.Dimension(1223, 696));
 
-        panelPrincipal.setBackground(new java.awt.Color(15, 90, 149));
+        panelPrincipal.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnGestionPacientes.setBackground(new java.awt.Color(15, 90, 149));
+        btnGestionPacientes.setBackground(new java.awt.Color(0, 51, 102));
         btnGestionPacientes.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnGestionPacientes.setForeground(new java.awt.Color(255, 255, 255));
         btnGestionPacientes.setText("Gestionar Pacientes");
@@ -54,12 +55,12 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        btnGestionCitas.setBackground(new java.awt.Color(15, 90, 149));
+        btnGestionCitas.setBackground(new java.awt.Color(0, 51, 102));
         btnGestionCitas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnGestionCitas.setForeground(new java.awt.Color(255, 255, 255));
         btnGestionCitas.setText("Gestionar Citas");
 
-        btnCerrar.setBackground(new java.awt.Color(0, 51, 153));
+        btnCerrar.setBackground(new java.awt.Color(0, 51, 102));
         btnCerrar.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btnCerrar.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrar.setText("X");
@@ -69,19 +70,20 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        btnCerrarSesion.setBackground(new java.awt.Color(0, 51, 153));
+        btnCerrarSesion.setBackground(new java.awt.Color(0, 51, 102));
         btnCerrarSesion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnCerrarSesion.setForeground(new java.awt.Color(255, 255, 255));
         btnCerrarSesion.setText("Cerrar Sesión");
 
-        btnAyuda.setBackground(new java.awt.Color(0, 51, 153));
+        btnAyuda.setBackground(new java.awt.Color(0, 51, 102));
         btnAyuda.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnAyuda.setForeground(new java.awt.Color(255, 255, 255));
         btnAyuda.setText("Ayuda");
 
         infoUser.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        infoUser.setForeground(new java.awt.Color(0, 0, 0));
         infoUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        infoUser.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 255, 255)));
+        infoUser.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout panelConsultasLayout = new javax.swing.GroupLayout(panelConsultas);
         panelConsultas.setLayout(panelConsultasLayout);
@@ -94,6 +96,11 @@ public class Principal extends javax.swing.JFrame {
             .addGap(0, 628, Short.MAX_VALUE)
         );
 
+        btnGestionCitas1.setBackground(new java.awt.Color(0, 51, 102));
+        btnGestionCitas1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnGestionCitas1.setForeground(new java.awt.Color(255, 255, 255));
+        btnGestionCitas1.setText("Registrar Pacientes");
+
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
         panelPrincipalLayout.setHorizontalGroup(
@@ -104,7 +111,9 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnGestionCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(infoUser, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
+                .addComponent(btnGestionCitas1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(infoUser, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btnAyuda)
                 .addGap(18, 18, 18)
@@ -124,7 +133,9 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(btnCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAyuda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelPrincipalLayout.createSequentialGroup()
-                        .addComponent(btnGestionCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnGestionCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGestionCitas1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(infoUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -177,20 +188,21 @@ public class Principal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Principal().setVisible(true);
+                new VentanaAdmin().setVisible(true);
             }
         });
     }
@@ -200,6 +212,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnGestionCitas;
+    private javax.swing.JButton btnGestionCitas1;
     private javax.swing.JButton btnGestionPacientes;
     private javax.swing.JLabel infoUser;
     private javax.swing.JPanel panelConsultas;
